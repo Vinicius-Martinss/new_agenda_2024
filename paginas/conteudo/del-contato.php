@@ -15,7 +15,7 @@ if (isset($_GET['idDel'])){
         $contar = $result->rowCount();
         if ($contar > 0) {
             $show = $result->fetch(PDO::FETCH_ASSOC);
-            $foto = $show->$foto_contatos; // Correção aqui
+            $foto = $show->foto_contatos; // Correção aqui
 
             if ($foto != 'avatar-padrao.png') {
                 // Caminho da imagem no servidor
