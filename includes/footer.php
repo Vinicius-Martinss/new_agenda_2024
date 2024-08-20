@@ -1,5 +1,5 @@
 <footer class="main-footer">
-    <strong>Copyright &copy; 2020 - Todos os direitos reservados.</strong>
+    <strong>Copyright &copy; 2024 - Todos os direitos reservados.</strong>
     
     <div class="float-right d-none d-sm-inline-block">
       <b>AG Versão</b> 2.0
