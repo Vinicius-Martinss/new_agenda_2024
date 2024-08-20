@@ -3,38 +3,51 @@ include ('../../config/conexao.php');
 
 if (isset($_GET['idDel'])){
     $id = $_GET['idDel'];
-    //Primeiro,recupere o nome da imagem do repository
-    $select = "SELECT foto_contatos FROM tb_contatos WHERE id_contatos=$id";
 
-        try{
-            $result = $conect->prepare($select);
-            $result->bindValue('id',$id,PDO::PARAM_INT);
-            $result-> execute();
+    // Recupera o nome da imagem do repositório
+    $select = "SELECT foto_contatos FROM tb_contatos WHERE id_contatos = :id";
 
-            $contar = $result->rowCount();
+    try {
+        $result = $conect->prepare($select);
+        $result->bindValue(':id', $id, PDO::PARAM_INT);
+        $result->execute();
+
+        $contar = $result->rowCount();
+        if ($contar > 0) {
+            $show = $result->fetch(PDO::FETCH_ASSOC);
+            $foto = $show->$foto_contatos; // Correção aqui
+
             if ($foto != 'avatar-padrao.png') {
-                //Caminho da imagem no servidor
-                $filepath = "../../img/cont/". $foto;
+                // Caminho da imagem no servidor
+                $filepath = "../../img/cont/" . $foto;
 
-                //Deleta a imagem
-                if(file_exists($filepath)) {
+                // Deleta a imagem
+                if (file_exists($filepath)) {
                     unlink($filepath);
                 }
             }
-            //Agora, delete o registro do bamco de dados
-            $delete = "DELETE FROM tb_contatos WHERE id_contatos=:id";
+
+            // Deleta o registro do banco de dados
+            $delete = "DELETE FROM tb_contatos WHERE id_contatos = :id";
             try {
-            $result = $conect->prepare($delete);
-            $result->bindValue(':id',$id,PDO::PARAM_INT);
-            $result->execute();
+                $result = $conect->prepare($delete);
+                $result->bindValue(':id', $id, PDO::PARAM_INT);
+                $result->execute();
 
-            }catch(Exception $e) {
-
+                if ($result->rowCount() > 0) {
+                    header("Location: ../home.php");
+                } else {
+                    header("Location: ../home.php");
+                }
+            } catch (Exception $e) {
+                echo '<strong>ERROR DE DELETE: </strong> ' . $e->getMessage();
             }
-            
-
-        }catch(PDOException $e) {
-
+        } else {
+            // Redirecionar se o registro não for encontrado
+            header("Location: ../home.php");
         }
-
+    } catch (PDOException $e) {
+        echo '<strong>ERROR DE SELECT: </strong> ' . $e->getMessage(); // Adicionei a mensagem de erro
     }
+}
+
