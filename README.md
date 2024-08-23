@@ -43,7 +43,7 @@ Bem-vindo ao projeto de **Agenda Eletrônica**, uma solução desenvolvida em PH
    - Inicie o servidor MySQL através do painel de controle do seu servidor local.
    - Acesse o phpMyAdmin (geralmente em `http://localhost/phpmyadmin`).
    - Crie um banco de dados com o nome desejado.
-   - Importe o arquivo `new_agenda.sql` disponível no projeto para criar as tabelas necessárias.
+   - Importe o arquivo `new_agenda_full.sql` disponível no projeto para criar as tabelas necessárias.
 
 4. **Atualize as configurações de conexão com o banco de dados:**
    - Edite o arquivo `config.php` com as informações do seu banco de dados (host, usuário, senha e nome do banco).
