@@ -1,5 +1,5 @@
 <?php
-// Inicia o buffer de saída
+ // Inicia o buffer de saída
 ob_start();
 
 // Inicia a sessão apenas se ainda não tiver sido iniciada
@@ -15,7 +15,7 @@ if (!isset($_SESSION['loginUser'])) {
 }
 
 // Inclui o script de saída
-include_once('sair.php'); 
+include_once('sair.php');
 ?>
 <!DOCTYPE html>
 <html lang="pt_br">
@@ -50,57 +50,40 @@ include_once('sair.php');
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <link rel="stylesheet" href="../dist/css/estilo.css">
 </head>
-
 <body class="hold-transition sidebar-mini layout-fixed">
-
 <div class="wrapper">
-
 <?php
-// Inclui o arquivo de configuração de conexão com o banco de dados
 include_once('../config/conexao.php');
-
-// Obtém o email do usuário logado a partir da sessão
 $usuarioLogado = $_SESSION['loginUser'];
 
-// Define a consulta SQL para selecionar todos os campos do usuário com base no email
 $selectUser = "SELECT * FROM tb_user WHERE email_user=:emailUserLogado";
 
 try {
-    // Prepara a consulta SQL
     $resultadoUser = $conect->prepare($selectUser);
-    
-    // Vincula o parâmetro :emailUserLogado ao valor da variável $usuarioLogado
     $resultadoUser->bindParam(':emailUserLogado', $usuarioLogado, PDO::PARAM_STR);
-    
-    // Executa a consulta preparada
     $resultadoUser->execute();
 
-    // Conta o número de linhas retornadas pela consulta
     $contar = $resultadoUser->rowCount();
-    
-    // Se houver uma ou mais linhas retornadas
     if ($contar > 0) {
-        // Obtém a próxima linha do conjunto de resultados como um objeto
         $show = $resultadoUser->fetch(PDO::FETCH_OBJ);
         
-        // Atribui os valores dos campos do usuário às variáveis PHP
+        // Variáveis do usuário logado
         $id_user = $show->id_user;
         $foto_user = $show->foto_user;
         $nome_user = $show->nome_user;
+        $senha_user = $show->senha_user;
         $email_user = $show->email_user;
     } else {
-        // Exibe uma mensagem de aviso se não houver dados de perfil
         echo '<div class="alert alert-danger"><strong>Aviso!</strong> Não há dados de perfil :(</div>';
     }
 } catch (PDOException $e) {
-    // Registra a mensagem de erro no log do servidor em vez de exibi-la ao usuário
+    // Log the error message instead of displaying it to the user
     error_log("ERRO DE LOGIN DO PDO: " . $e->getMessage());
-    
-    // Exibe uma mensagem de erro genérica para o usuário
     echo '<div class="alert alert-danger"><strong>Aviso!</strong> Ocorreu um erro ao tentar acessar os dados do perfil.</div>';
 }
-?>
 
+
+?>
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
@@ -161,10 +144,10 @@ try {
             // Verifica se a variável $foto_user é igual a 'avatar-padrao.png'
             if ($foto_user == 'avatar-padrao.png') {
                 // Exibe a imagem do avatar padrão
-                echo '<img src="../img/avatar_p/' . $foto_user . '" alt="' . $foto_user . '" title="' . $nome_user . '" style="width: 40px; border-radius: 100%;">';
+                echo '<img src="../img/avatar_p/' . $foto_user . '" alt="' . $foto_user . '" title="' . $foto_user . '" style="width: 40px; border-radius: 100%;">';
             } else {
                 // Exibe a imagem do usuário
-                echo '<img src="../img/user/' . $foto_user . '" alt="' . $foto_user . '" title="' . $nome_user . '" style="width: 40px; border-radius: 100%;">';
+                echo '<img src="../img/user/' . $foto_user . '" alt="' . $foto_user . '" title="' . $foto_user . '" style="width: 40px; border-radius: 100%;">';
             }
           ?>
         </div>
